@@ -1,6 +1,7 @@
 package com.example.tikeo.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tikeo.Activity.PlayActivity;
 import com.example.tikeo.Adapter.Holder.VideoHolder;
 import com.example.tikeo.Models.Video;
 import com.example.tikeo.R;
@@ -31,8 +33,57 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull VideoHolder holder, int position) {
+        String title = videoList.get(position).getName();
+        holder.getNameTextView().setText(title);
+
+        String otherInfor = videoList.get(position).getPath().getPath();
+        holder.getOtherTextView().setText(otherInfor);
+
+        holder.getNumTextView().setText(position);
+
+        String duration = milliSecondsToTimer(videoList.get(position).getDuration());
+        holder.getDurationTextView().setText(duration);
+
+        holder.getButton().setOnClickListener(e -> {
+            startMyActivity(position);
+        });
+
+        holder.itemView.setOnClickListener(e -> {
+            startMyActivity(position);
+        });
+
 
     }
+
+    private void startMyActivity(int position) {
+        Intent intent = new Intent(context, PlayActivity.class);
+        intent.putExtra("position", position);
+        context.startActivity(intent);
+    }
+
+    public String milliSecondsToTimer(long milliseconds) {
+        String finalTimerString;
+        String secondsString;
+
+        // Chuyển đổi tổng số milliseconds thành số giây
+        int seconds = (int) (milliseconds / 1000);
+
+        // Tính số phút
+        int minutes = seconds / 60;
+        seconds = seconds % 60;
+
+        // Định dạng chuỗi cho số giây và số phút
+        secondsString = String.valueOf(seconds);
+        if (seconds < 10) {
+            secondsString = "0" + secondsString;
+        }
+
+        finalTimerString = minutes + ":" + secondsString;
+
+        // Trả về chuỗi mm:ss
+        return finalTimerString;
+    }
+
 
     @Override
     public int getItemCount() {
