@@ -3,24 +3,24 @@ package com.example.tikeo.Models;
 import android.net.Uri;
 
 public class Video {
-    private Uri uri;
+    private Uri path;
     private String name;
     private int duration;
     private int size;
 
     public Video(Uri uri, String name, int duration, int size) {
-        this.uri = uri;
+        this.path = uri;
         this.name = name;
         this.duration = duration;
         this.size = size;
     }
 
-    public Uri getUri() {
-        return uri;
+    public Uri getPath() {
+        return path;
     }
 
-    public void setUri(Uri uri) {
-        this.uri = uri;
+    public void setPath(Uri path) {
+        this.path = path;
     }
 
     public String getName() {
