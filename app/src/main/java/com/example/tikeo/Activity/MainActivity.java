@@ -51,9 +51,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void requestFileAccess() {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_VIDEO)
+                != PackageManager.PERMISSION_GRANTED) {
             // Ứng dụng chưa được cấp quyền
 
             // Yêu cầu người dùng cấp quyền
@@ -73,13 +76,15 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUESTCODE) {
             // Xử lý kết quả của việc yêu cầu quyền
 
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1]
+                    == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
                 // Người dùng đã cấp quyền
                 // Thực hiện các tác vụ cần quyền
                 videoList = getAll(this);
                 initViewPaper();
             } else {
-                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUESTCODE);
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        , Manifest.permission.READ_MEDIA_VIDEO}, REQUESTCODE);
             }
         }
     }
@@ -99,18 +104,18 @@ public class MainActivity extends AppCompatActivity {
                 MediaStore.Video.Media.DURATION,
                 MediaStore.Video.Media.SIZE
         };
-        String selection = MediaStore.Video.Media.DURATION +
-                " >= ?";
-        String[] selectionArgs = new String[]{
-                String.valueOf(TimeUnit.MILLISECONDS.convert(5, TimeUnit.MINUTES))
-};
+//        String selection = MediaStore.Video.Media.DURATION +
+//                " >= ?";
+//        String[] selectionArgs = new String[]{
+//                String.valueOf(TimeUnit.MILLISECONDS.convert(5, TimeUnit.MINUTES))
+//};
         String sortOrder = MediaStore.Video.Media.DISPLAY_NAME + " ASC";
 
         try (Cursor cursor = getApplicationContext().getContentResolver().query(
                 collection,
                 projection,
-                selection,
-                selectionArgs,
+                null,
+                null,
                 sortOrder
         )) {
             // Cache column indices.
@@ -121,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
                     cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION);
             int sizeColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE);
 
+            boolean run = cursor.moveToNext();
             while (cursor.moveToNext()) {
                 // Get values of columns for a given video.
                 long id = cursor.getLong(idColumn);
@@ -134,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
                 // Stores column values and the contentUri in a local object
                 // that represents the media file.
                 temp.add(new Video(contentUri, name, duration, size));
+//                cursor.moveToNext();
             }
 
         }
