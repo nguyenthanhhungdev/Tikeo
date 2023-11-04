@@ -36,8 +36,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoHolder> {
         String title = videoList.get(position).getName();
         holder.getNameTextView().setText(title);
 
-        String otherInfor = videoList.get(position).getPath().getPath();
-        holder.getOtherTextView().setText(otherInfor);
+        String otherInfo = videoList.get(position).getPath().getPath();
+        holder.getOtherTextView().setText(otherInfo);
 
         holder.getNumTextView().setText(position);
 
@@ -51,7 +51,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoHolder> {
         holder.itemView.setOnClickListener(e -> {
             startMyActivity(position);
         });
-
 
     }
 
@@ -87,6 +86,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoHolder> {
 
     @Override
     public int getItemCount() {
-        return 0;
+        return videoList.size();
     }
 }

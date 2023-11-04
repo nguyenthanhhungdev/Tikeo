@@ -2,7 +2,6 @@ package com.example.tikeo.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.core.app.ActivityCompat;
 import androidx.viewpager.widget.ViewPager;
 
@@ -17,15 +16,14 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 
 import com.example.tikeo.Adapter.ViewPaperApdapter;
-import com.example.tikeo.Fragment.MyVideoLike;
-import com.example.tikeo.Fragment.MyVideos;
+import com.example.tikeo.Fragment.FavoriteFragment;
+import com.example.tikeo.Fragment.MyVideoFragment;
 import com.example.tikeo.Models.Video;
 import com.example.tikeo.R;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
     public static List<Video> videoList;
@@ -37,15 +35,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         requestFileAccess();
-        initViewPaper();
     }
 
     private void initViewPaper() {
         ViewPager viewPager = findViewById(R.id.myViewPager);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.myTabLayout);
         ViewPaperApdapter viewPaperAdapter = new ViewPaperApdapter(getSupportFragmentManager());
-        viewPaperAdapter.addFragment(new MyVideos(), "My Video");
-        viewPaperAdapter.addFragment(new MyVideoLike(), "Video yêu thích");
+        viewPaperAdapter.addFragment(new MyVideoFragment(), "My Video");
+        viewPaperAdapter.addFragment(new FavoriteFragment(), "Favorite");
         viewPager.setAdapter(viewPaperAdapter);
         tabLayout.setupWithViewPager(viewPager);
     }
@@ -126,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
                     cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION);
             int sizeColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE);
 
-            boolean run = cursor.moveToNext();
             while (cursor.moveToNext()) {
                 // Get values of columns for a given video.
                 long id = cursor.getLong(idColumn);
@@ -140,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
                 // Stores column values and the contentUri in a local object
                 // that represents the media file.
                 temp.add(new Video(contentUri, name, duration, size));
-//                cursor.moveToNext();
             }
 
         }
