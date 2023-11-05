@@ -76,16 +76,15 @@ public class MyVideoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView = view.findViewById(R.id.recyclerViewSong);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewSong);
         recyclerView.setHasFixedSize(true);
 
         if (!videoList.isEmpty()) {
-            if (videoList.size() > 1){//            Nếu lấy ra thành công video thì tạo đối tượng adapter
-                videoAdapter = new VideoAdapter(getContext(), videoList);
+            videoAdapter = new VideoAdapter(getContext(), videoList);
 //            Thêm adapter vào recyclerView
-                recyclerView.setAdapter(videoAdapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-            }
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+            recyclerView.setAdapter(videoAdapter);
+            videoAdapter.notifyDataSetChanged();
         }
     }
 }

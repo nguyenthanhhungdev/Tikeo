@@ -39,7 +39,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoHolder> {
         String otherInfo = videoList.get(position).getPath().getPath();
         holder.getOtherTextView().setText(otherInfo);
 
-        holder.getNumTextView().setText(position);
+        holder.getNumTextView().setText(String.valueOf(position));
 
         String duration = milliSecondsToTimer(videoList.get(position).getDuration());
         holder.getDurationTextView().setText(duration);
@@ -51,7 +51,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoHolder> {
         holder.itemView.setOnClickListener(e -> {
             startMyActivity(position);
         });
-
     }
 
     private void startMyActivity(int position) {
@@ -86,6 +85,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoHolder> {
 
     @Override
     public int getItemCount() {
-        return videoList.size();
+        return (videoList.size() > 0 ? videoList.size() : 1);
     }
 }

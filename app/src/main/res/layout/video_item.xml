@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:id="@+id/numberText"
-        android:text="Number"
+        android:text="0"
         android:textSize="15sp"
         android:layout_marginEnd="10dp"
         android:textColor="@color/white"
@@ -21,10 +21,9 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:id="@+id/imageView"
-        android:background="@drawable/ic_launcher_background"
         android:layout_toEndOf="@+id/numberText"
-        android:scaleType="center"
         android:layout_marginEnd="10dp"
+        android:src="@drawable/img"
         ></ImageView>
 
     <TextView
