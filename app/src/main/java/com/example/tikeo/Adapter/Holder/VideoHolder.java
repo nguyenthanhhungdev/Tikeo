@@ -23,6 +23,7 @@ public class VideoHolder extends RecyclerView.ViewHolder {
         otherTextView = itemView.findViewById(R.id.otherTextView);
         durationTextView = itemView.findViewById(R.id.durationTextView);
         button = itemView.findViewById(R.id.playButton);
+
     }
 
     public ImageView getImageView() {

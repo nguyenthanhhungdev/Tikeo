@@ -1,20 +1,27 @@
 package com.example.tikeo.Activity;
 
+import static java.security.AccessController.getContext;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 
+import com.example.tikeo.Adapter.VideoAdapter;
 import com.example.tikeo.Adapter.ViewPaperApdapter;
 import com.example.tikeo.Fragment.FavoriteFragment;
 import com.example.tikeo.Fragment.MyVideoFragment;
@@ -29,22 +36,37 @@ public class MainActivity extends AppCompatActivity {
     public static List<Video> videoList;
 
     public static final int REQUESTCODE = 1;
+    private RecyclerView recyclerView;
+    private VideoAdapter videoAdapter;
 
+    public static List<Bitmap> thumpnailBitmaps = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.fragment_my_video);
         requestFileAccess();
     }
 
     private void initViewPaper() {
-        ViewPager viewPager = findViewById(R.id.myViewPager);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.myTabLayout);
-        ViewPaperApdapter viewPaperAdapter = new ViewPaperApdapter(getSupportFragmentManager());
-        viewPaperAdapter.addFragment(new MyVideoFragment(), "My Video");
-        viewPaperAdapter.addFragment(new FavoriteFragment(), "Favorite");
-        viewPager.setAdapter(viewPaperAdapter);
-        tabLayout.setupWithViewPager(viewPager);
+//        ViewPager viewPager = findViewById(R.id.myViewPager);
+//        TabLayout tabLayout = (TabLayout) findViewById(R.id.myTabLayout);
+//        ViewPaperApdapter viewPaperAdapter = new ViewPaperApdapter(getSupportFragmentManager());
+//        viewPaperAdapter.addFragment(new MyVideoFragment(), "My Video");
+//        viewPaperAdapter.addFragment(new FavoriteFragment(), "Favorite");
+//        viewPager.setAdapter(viewPaperAdapter);
+//        tabLayout.setupWithViewPager(viewPager);
+
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerViewSong);
+        recyclerView.setHasFixedSize(true);
+
+        if (!videoList.isEmpty()) {
+            videoAdapter = new VideoAdapter(this, videoList);
+//            Thêm adapter vào recyclerView
+            recyclerView.setLayoutManager(new LinearLayoutManager(this,
+                    RecyclerView.VERTICAL, false));
+            recyclerView.setAdapter(videoAdapter);
+            videoAdapter.notifyDataSetChanged();
+        }
     }
 
     private void requestFileAccess() {
@@ -136,6 +158,12 @@ public class MainActivity extends AppCompatActivity {
                 // Stores column values and the contentUri in a local object
                 // that represents the media file.
                 temp.add(new Video(contentUri, name, duration, size));
+
+                ContentResolver cr = getContentResolver();
+                Uri uri = ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, id);
+                Bitmap thumbnail = MediaStore.Video.Thumbnails.getThumbnail(cr, id, MediaStore.Video.Thumbnails.MINI_KIND, null);
+
+                thumpnailBitmaps.add(thumbnail);
             }
 
         }

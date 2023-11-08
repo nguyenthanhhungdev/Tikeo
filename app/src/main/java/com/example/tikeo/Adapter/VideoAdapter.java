@@ -1,7 +1,13 @@
 package com.example.tikeo.Adapter;
 
+import static com.example.tikeo.Activity.MainActivity.thumpnailBitmaps;
+
+import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +20,7 @@ import com.example.tikeo.Adapter.Holder.VideoHolder;
 import com.example.tikeo.Models.Video;
 import com.example.tikeo.R;
 
+import java.io.IOException;
 import java.util.List;
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoHolder> {
@@ -43,6 +50,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoHolder> {
 
         String duration = milliSecondsToTimer(videoList.get(position).getDuration());
         holder.getDurationTextView().setText(duration);
+
+        holder.getImageView().setImageBitmap(thumpnailBitmaps.get(position));
 
         holder.getButton().setOnClickListener(e -> {
             startMyActivity(position);

@@ -1,4 +1,7 @@
 package com.example.tikeo.Activity;
 
-public class PlayActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class PlayActivity extends AppCompatActivity {
+
 }
